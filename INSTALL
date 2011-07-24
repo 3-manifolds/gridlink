@@ -1,0 +1,46 @@
+UNIX users:
+* download gridlink.tgz to a temporary location (e.g. /tmp)
+* change to the temporary directory (cd /tmp)
+* unpack the archive. (tar xfvz gridlink.tgz)
+* change to the new subdirectory named Gridlink_pkg (cd Gridlink_pkg)
+
+IF YOU ARE A SUPERUSER and would like to install gridlink for
+use by all users, type:
+   sudo python setup.py install
+or su as root and type
+   python setup.py install
+
+IF YOU ARE NOT A SUPERUSER and want to install gridlink in your home
+directory, type:
+   python setup.py install --home ~
+This will install the executable script in the directory ~/bin and
+the other files will be installed in ~/lib/python .
+For this to work conveniently, you will need the directory ~/bin to
+be included in your environment variable PATH, and you will need
+~/lib/python to be included in your environment variable PYTHON_PATH. 
+You can arrange this by typing the two commands below or, to have it
+done automatically, by adding the commands to the appropriate startup
+file (e.g. ~/.profile or ~/.cshrc):
+
+(for the bash shell)
+export PATH=~/bin:$PATH
+export PYTHON_PATH=~/lib/python:$PYTHON_PATH
+
+(for the csh or tcsh shell)
+setenv PATH "~/bin:$PATH"
+setenv PYTHON_PATH "~/lib/python:$PYTHON_PATH"
+
+-------------------------------------------------------------------
+MAC users:
+
+Download the disk image named Gridlink.dmg .  Attach the disk image
+and copy the application into your Applications folder (or wherever
+else you might want it to go).  Double click the figure 8 icon to
+run the program.  To uninstall, drag the application to the trash.
+
+------------------------------------------------------------------
+WINDOWS users:
+
+If you have python installed on your system you may be able to follow
+the UNIX instructions from a DOS prompt.  Maybe there will be a
+standalone Windows application at some point.

@@ -1,0 +1,148 @@
+WHAT IS THIS?
+
+Gridlink is a little tool for manipulating the rectangular link diagrams
+used by Ivan Dynnikov in his paper:
+
+   Ivan Dynnikov, Recognition algorithms in knot theory. (Russian)
+   Uspekhi Mat. Nauk 58 (2003), no. 6(354), 45--92; translation in
+   Russian Math. Surveys 58 (2003), no. 6, 1093--1139.
+
+Dynnikov proved in the paper above that any rectangular diagram of an
+unknot or split link can be **monotonically** reduced to a trivial
+diagram by a sequence of elementary moves.  Thus this gives a recognition
+algorithm for grid diagrams of the unknot.
+
+More recently (Fall 2006) these diagrams have been used to give a
+combinatorial description of the knot and link Floer homology.
+
+   Ciprian Manolescu, Peter Ozsvath and Sucharit Sarkar, A
+   combinatorial description of knot Floer
+   homology,arXiv:math.GT/0607691
+
+   Ciprian Manolescu, Peter Ozsvath, Zoltan Szabo and Dylan Thurston,
+   On combinatorial link Floer homology, arXiv:math.GT/0610559.
+
+A rectangular link diagram (or gridlink) is a polygonal link
+projection consisting of horizontal and vertical line segments lying
+in the integer grid, such that whenever two segments cross, the
+vertical segment is the overcrossing.  The diagram is also required to
+be in standard position, in the sense that no two segments are
+colinear.
+
+Dynnikov defines three elementary moves on a rectangular diagram: the
+castling, or exchange move; the cyclic permutation, and the
+destabilization move.  The castling move is an isotopy which drags one
+vertical (horizontal) segment across an adjacent one, interchanging
+the x (y) coordinates of the two segments, and fixes all segments
+which do not meet the two that are being interchanged.  (Because it is
+an isotopy, a castling move can only be performed when the projections
+of boundary 0-spheres of the two segments are unlinked.)  The cyclic
+permutation is like a castling move involving the top and bottom (left
+and right) horizontal (vertical) segments, thought of as lying on the
+2-sphere.  The simplest destabilization move removes a pair of
+consecutive segments of length 1.  However, the boundary of a segment
+of length 1 can never be linked.  So there is a more general
+destabilization move that removes any segment of length 1; this is
+the destabilization implemented by the program.
+
+
+HOW DO YOU USE IT?
+
+The easiest way to run the program is to type 
+   python gridlink.py
+from the directory containing the files gridlink.py and
+gridlink_data.py.  This will start the GUI.
+
+If you want to have access to the internal objects you can also load
+gridlink as a python module from the python interpreter with the
+command:
+>>>   import * from gridlink
+For this to work, make sure that your python interpreter can find the
+two files gridlink.py and gridlink_data.py.  This can be done by
+starting the python interpreter from the directory containing the
+files, or by putting them in a directory that is specified in your
+PYTHONPATH variable, or by putting them in the python site-packages
+directory.
+
+When the program starts, a small window with an image of the figure 8
+knot is presented.  Each link opens in a new window, and these are
+tracked in the Windows menu.  If all of the link windows are closed
+the figure 8 window will reappear. Closing the figure 8 window
+terminates the program.
+
+Inside a link window, when two segments are highlighted in blue,
+click the mouse to exchange.  Click and drag the mouse on the
+background to do cyclic permutation.  Gridlinks are oriented, and the
+orientation is displayed with an arrow head on each vertical segment.
+(They can also be displayed as a matrix of dots, or X's and O's.) The
+orientation of a component can be reversed by clicking the "reverse"
+button and then selecting the component with the mouse.  The buttons
+labelled "NE", "NW" "SE", "SW" select one of the four types of
+stabilization moves.  (The checkboxes under these buttons can be used
+to limit which types of stabilizations are allowed.)  After clicking a
+stabilization button, select a segment to be stabilized.  If a
+vertical segment is selected, the move takes place at the tail of the
+segment.  To perform a move at the head of a vertical segment, select
+the following horizontal segment.  In this case, the stabilization
+move is equivalent to stabilizing at the tail of the vertical segment
+and then transporting the new length 1 segment to the head by exchange
+moves.  To destabilize, click the "destab" button and select a length
+1 segment to remove.
+
+There are shortcut keys for all operations except for stabilization:
+d to destabilize, r to reverse, u to undo, and arrow keys for
+cyclic permutations.
+
+The program records all moves, and the list can be displayed by
+running the "print_moves" method at the python prompt.  The number of
+moves is displayed at the lower right corner of the gridlink window.
+The "Moves->Reset" menu action clears the list of saved moves and
+restarts the counter.  The "Moves->Review" menu action allows you to
+step forward or backward through your sequence of moves, displaying
+the projection at each step.  The "Moves->Simplify" menu action
+applies a random sequence of 10000 (unrecorded) elementary moves,
+performing (allowed) destabilizations when possible.  In most cases
+this will reduce the presentation to something close to minimal.  If
+not, try again.  Note that the process does not involve stabilization.
+(Question: Can any link diagram be reduced to the minimal number of
+segments without stabilizing?)
+
+The "View" menu gives several choices for presenting the grid
+projection.  You can save or load a projection together with a list of
+moves with "File->Save as ...", or "File->Open".  You can save a
+Postscript rendering of the link with "File->Snapshot ...".
+
+A link can be entered as a closed braid from the menu
+File->New->ClosedBraid.  A dialog window will ask for the number of
+strands and a word in the braid group.  For example, the word
+1,1,-2,1,3,-2,3,4,-3,4 describes a 5 strand braid representation of
+knot 9_12.  
+
+The program also contains a table of closed braid representions of
+knots up to 12 crossings, generated from a query of Chuck Livingston's
+knotinfo database: http://www.indiana.edu/~knotinfo/ To load a knot
+from the table use the File->New->Knot menu.
+
+Finally, the menu File->New->XO link allows entry of a gridlink as
+a matrix containing exactly one X and one O in each row and column.
+The link is consists of a vertical segment from the X to the O in
+each column, and a horizontal segment from the O to the X in each
+row.  Enter the link by listing the column indices of the X's and
+the column indices of the O's.
+ 
+Example session (using the interpreter):
+
+% python
+>>> from gridlink import *
+>>> A = GridlinkApp()
+>>> #Here are a couple of links that cannot be reduced by elementary moves.
+>>> #Thanks to Dylan Thurston for these.
+>>> L4a1 = XOlink(A, [1,2,5,0,3,4], [3,0,1,4,5,2])
+>>> Whitehead = XOlink(A, [6,3,2,1,4,5,0], [2,1,0,5,6,3,4])
+>>> #Here are a couple of interesting unknots.  Thanks to Ian Agol for these.
+>>> K== XOlink(A, [5,1,7,3,12,4,6,0,11,2,8,13,19,10,21,15,17,9,18,14,20,16],
+[0,4,2,6,5,8,1,7,3,10,12,9,11,18,14,20,13,16,15,19,17,21])
+>>> K = XOlink(A, [7,14,15,12,13,9,10,2,1,0,4,3,8,6,5,11],
+[15,10,13,14,11,12,8,9,3,2,1,5,4,0,7,6])
+>>> K9_12 = ClosedBraid(A,5,[1,1,-2,1,3,-2,3,4,-3,4])
+>>> K = Knot(A,'11a_123')
