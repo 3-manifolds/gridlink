@@ -1,0 +1,7 @@
+#! /bin/bash
+rm -rf build dist
+python setup.py py2app
+rm -rf dist/Gridlink.app/Contents/Frameworks/Tcl.framework/Versions/8.4/Resources/English.lproj
+rm -rf dist/PLink.app/Contents/Frameworks/Tk.framework/Versions/8.4/Resources/Scripts/demos
+
+
