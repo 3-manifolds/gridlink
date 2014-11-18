@@ -1075,7 +1075,8 @@ class Gridlink:
                         'Sorry, I can only compute HFK^ for knots.')
             return
         Xlist, Olist = self.get_XOlists(force_zero=True)
-        hfk_object = TkHFK(Xlist, Olist, name=self.window.title())
+        hfk_object = TkHFK(Xlist, Olist, name=self.window.title(),
+                           master=self.window)
         hfk_object.HFK_ranks()
 
     def winding_numbers(self):
